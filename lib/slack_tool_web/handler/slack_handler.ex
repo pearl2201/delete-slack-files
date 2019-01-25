@@ -49,7 +49,7 @@ defmodule SlackToolWeb.SlackHandler do
       {:ok, files} ->
         file_reduces = Enum.map(files, fn x -> %{"id" => x["id"], "name" => x["name"]} end)
         message = Poison.encode!(file_reduces)
-        send_message(user, channel, message)
+        send_message(channel, message)
 
       {:error} ->
         IO.inspect("Error geting file")
@@ -60,7 +60,7 @@ defmodule SlackToolWeb.SlackHandler do
     case get_files(user) do
       {:ok, files} ->
         Enum.each(files, fn x -> delete_file(x, user) end)
-        send_message(user, channel, "Finish!")
+        send_message(channel, "Finish!")
 
       {:error} ->
         IO.inspect("Error geting file")
@@ -70,7 +70,7 @@ defmodule SlackToolWeb.SlackHandler do
   @doc """
   send message as bot
   """
-  def send_message(user, channel, message) do
+  def send_message(channel, message) do
     token = Application.fetch_env!(:slack_tool, :oauth_access_token)
 
     url =
@@ -87,10 +87,10 @@ defmodule SlackToolWeb.SlackHandler do
         IO.inspect(response)
 
       {:ok, %HTTPoison.Response{status_code: 404}} ->
-        {:error}
+        {:error, "404 Not found"}
 
       {:error, %HTTPoison.Error{reason: reason}} ->
-        {:error}
+        {:error, reason}
     end
   end
 
@@ -117,10 +117,10 @@ defmodule SlackToolWeb.SlackHandler do
         end
 
       {:ok, %HTTPoison.Response{status_code: 404}} ->
-        {:error}
+        {:error, "404 Not found"}
 
       {:error, %HTTPoison.Error{reason: reason}} ->
-        {:error}
+        {:error, reason}
     end
   end
 
@@ -148,10 +148,10 @@ defmodule SlackToolWeb.SlackHandler do
         end
 
       {:ok, %HTTPoison.Response{status_code: 404}} ->
-        IO.puts("Not found :(")
+        {:error, "404 Not found"}
 
       {:error, %HTTPoison.Error{reason: reason}} ->
-        IO.inspect(reason)
+        {:error, reason}
     end
   end
 end

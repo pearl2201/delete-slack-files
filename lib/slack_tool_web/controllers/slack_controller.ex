@@ -2,13 +2,12 @@ defmodule SlackToolWeb.SlackController do
   use SlackToolWeb, :controller
   alias SlackToolWeb.SlackHandler
 
-  def index(conn, %{"token" => token, "challenge" => challenge, "type" => type}) do
+  def index(conn, %{"challenge" => challenge}) do
     text(conn, "#{challenge}")
   end
 
   def index(conn, _params) do
     Task.Supervisor.async_nolink(SlackTool.TaskSupervisor, fn ->
-      m = _params["api_app_id"]
       evt = _params["event"]
 
       if evt != nil do

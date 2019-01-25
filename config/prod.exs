@@ -25,6 +25,11 @@ config :slack_tool, SlackTool.Repo,
   pool_size: String.to_integer(System.get_env("POOL_SIZE") || "10"),
   ssl: true
 
+# Configure your slack app
+config :slack_tool,
+  oauth_access_token: System.get_env("OAUTH_ACCESS_TOKEN"),
+  bot_token: System.get_env("BOT_TOKEN")
+
 # ## SSL Support
 #
 # To get SSL working, you will need to add the `https` key
