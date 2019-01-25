@@ -73,3 +73,8 @@ config :slack_tool, SlackTool.Repo,
   database: "slack_tool_dev",
   hostname: "localhost",
   pool_size: 10
+
+# Configure your slack app
+config :slack_tool,
+  oauth_access_token: System.get_env("OAUTH_ACCESS_TOKEN"),
+  bot_token: System.get_env("BOT_TOKEN")

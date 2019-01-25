@@ -19,6 +19,12 @@ defmodule SlackToolWeb.Router do
     get "/", PageController, :index
   end
 
+  scope "/api/", SlackToolWeb do
+    pipe_through :api
+
+    post "/", SlackController, :index
+  end
+
   # Other scopes may use custom stacks.
   # scope "/api", SlackToolWeb do
   #   pipe_through :api

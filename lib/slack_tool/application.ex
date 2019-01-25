@@ -11,7 +11,8 @@ defmodule SlackTool.Application do
       # Start the Ecto repository
       SlackTool.Repo,
       # Start the endpoint when the application starts
-      SlackToolWeb.Endpoint
+      SlackToolWeb.Endpoint,
+      {Task.Supervisor, name: SlackTool.TaskSupervisor}
       # Starts a worker by calling: SlackTool.Worker.start_link(arg)
       # {SlackTool.Worker, arg},
     ]
